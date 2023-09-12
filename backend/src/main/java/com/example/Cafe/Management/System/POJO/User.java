@@ -1,6 +1,8 @@
 package com.example.Cafe.Management.System.POJO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -10,8 +12,10 @@ import java.io.Serializable;
 @NamedQuery(name = "User.findByEmailId", query = "select u from User u where u.email=:email")
 @Data
 @Entity
-@DynamicInsert
-@DynamicUpdate
+@NoArgsConstructor
+@AllArgsConstructor
+//@DynamicInsert
+//@DynamicUpdate
 @Table(name="users")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -38,4 +42,13 @@ public class User implements Serializable {
 
     @Column(name = "role")
     private String role;
+
+    public User(String name, String contactNumber, String email, String password, String status, String role) {
+        this.name = name;
+        this.contactNumber = contactNumber;
+        this.email = email;
+        this.password = password;
+        this.status = status;
+        this.role = role;
+    }
 }
