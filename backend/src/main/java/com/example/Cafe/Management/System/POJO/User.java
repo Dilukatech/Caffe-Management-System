@@ -10,6 +10,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @NamedQuery(name = "User.findByEmailId", query = "select u from User u where u.email=:email")
+@NamedQuery(name = "User.getAllUser",query = "select new com.example.Cafe.Management.System.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.status) from User u where u.role='user'")
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -43,12 +45,12 @@ public class User implements Serializable {
     @Column(name = "role")
     private String role;
 
-    public User(String name, String contactNumber, String email, String password, String status, String role) {
-        this.name = name;
-        this.contactNumber = contactNumber;
-        this.email = email;
-        this.password = password;
-        this.status = status;
-        this.role = role;
-    }
+//    public User(String name, String contactNumber, String email, String password, String status, String role) {
+//        this.name = name;
+//        this.contactNumber = contactNumber;
+//        this.email = email;
+//        this.password = password;
+//        this.status = status;
+//        this.role = role;
+//    }
 }

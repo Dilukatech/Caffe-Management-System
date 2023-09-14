@@ -8,6 +8,7 @@ import com.example.Cafe.Management.System.constents.CafeConstants;
 import com.example.Cafe.Management.System.dao.UserDao;
 import com.example.Cafe.Management.System.service.UserService;
 import com.example.Cafe.Management.System.utils.CafeUtils;
+import com.example.Cafe.Management.System.wrapper.UserWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.bridge.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 @Slf4j
@@ -35,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     JwtUtil jwtUtil;
+
+    @Autowired
+    JwtFilter jwtFilter;
 
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
@@ -99,4 +105,19 @@ public class UserServiceImpl implements UserService {
        } return new ResponseEntity<String>("{\"message\":\"" + "Bad Credential." + "\"}",
                 HttpStatus.BAD_REQUEST);
     }
+
+    @Override
+    public ResponseEntity<List<UserWrapper>> getAllUser() {
+      try{
+        if(jwtFilter.isAdmin()){
+            return new ResponseEntity<>(userDao.getAllUser(),HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(new ArrayList<>(),HttpStatus.UNAUTHORIZED);
+        }
+      }catch(Exception ex){
+          ex.printStackTrace();
+      }
+      return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
